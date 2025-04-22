@@ -3,22 +3,26 @@ const mobileMenu = document.querySelector('.mobile-menu');
 const navLinks = document.querySelector('.nav-links');
 
 mobileMenu.addEventListener('click', () => {
-    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    navLinks.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
 });
 
 // Smooth Scroll for Navigation Links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
+        
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
             target.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
+            
             // Close mobile menu if open
             if (window.innerWidth <= 768) {
-                navLinks.style.display = 'none';
+                navLinks.classList.remove('active');
+                mobileMenu.classList.remove('active');
             }
         }
     });
@@ -26,14 +30,14 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Scroll Animation
 const animateOnScroll = () => {
-    const elements = document.querySelectorAll('.service-card, .case-study-card, .testimonial');
+    const elements = document.querySelectorAll('.animate-on-scroll');
     
     elements.forEach(element => {
         const elementTop = element.getBoundingClientRect().top;
         const elementBottom = element.getBoundingClientRect().bottom;
         
         if (elementTop < window.innerHeight && elementBottom > 0) {
-            element.classList.add('animate');
+            element.classList.add('visible');
         }
     });
 };
@@ -77,20 +81,12 @@ let lastScroll = 0;
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
     
-    if (currentScroll <= 0) {
-        header.classList.remove('scroll-up');
-        return;
+    if (currentScroll > 100) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
     }
     
-    if (currentScroll > lastScroll && !header.classList.contains('scroll-down')) {
-        // Scroll Down
-        header.classList.remove('scroll-up');
-        header.classList.add('scroll-down');
-    } else if (currentScroll < lastScroll && header.classList.contains('scroll-down')) {
-        // Scroll Up
-        header.classList.remove('scroll-down');
-        header.classList.add('scroll-up');
-    }
     lastScroll = currentScroll;
 });
 
@@ -130,4 +126,161 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
-}); 
+});
+
+// Loading Screen
+document.addEventListener('DOMContentLoaded', () => {
+    const loadingScreen = document.createElement('div');
+    loadingScreen.className = 'loading';
+    loadingScreen.innerHTML = '<div class="loading-spinner"></div>';
+    document.body.appendChild(loadingScreen);
+
+    // Simulate loading time
+    setTimeout(() => {
+        loadingScreen.classList.add('fade-out');
+        setTimeout(() => {
+            loadingScreen.remove();
+        }, 500);
+    }, 1000);
+});
+
+// Initialize Particles.js
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('particles-js')) {
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#6366f1'
+                },
+                shape: {
+                    type: 'circle'
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true
+                },
+                size: {
+                    value: 3,
+                    random: true
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#6366f1',
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: true,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'grab'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+    }
+});
+
+// Sample blog posts
+const samplePosts = [
+    {
+        title: 'The Future of AI in Digital Marketing',
+        description: 'Explore how artificial intelligence is revolutionizing the way businesses approach digital marketing, from personalized content to predictive analytics.',
+        cover_image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        tag_list: ['AI', 'Marketing', 'Technology'],
+        user: {
+            name: 'Marcometrix Team',
+            profile_image: 'images/marco.jpeg'
+        },
+        published_at: new Date().toISOString()
+    },
+    {
+        title: 'Maximizing ROI with Data-Driven Marketing',
+        description: 'Learn how to leverage data analytics to optimize your marketing campaigns and achieve better results with your advertising budget.',
+        cover_image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        tag_list: ['Analytics', 'ROI', 'Strategy'],
+        user: {
+            name: 'Marcometrix Team',
+            profile_image: 'images/marco.jpeg'
+        },
+        published_at: new Date().toISOString()
+    },
+    {
+        title: 'Building a Strong Digital Presence in 2024',
+        description: 'Discover the essential strategies and tools needed to establish and maintain a powerful digital presence in today\'s competitive market.',
+        cover_image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+        tag_list: ['Digital Marketing', 'Strategy', 'Growth'],
+        user: {
+            name: 'Marcometrix Team',
+            profile_image: 'images/marco.jpeg'
+        },
+        published_at: new Date().toISOString()
+    }
+];
+
+// Update the fetchBlogPosts function
+async function fetchBlogPosts() {
+    try {
+        // For now, we'll use the sample posts
+        displayBlogPosts(samplePosts);
+    } catch (error) {
+        console.error('Error fetching blog posts:', error);
+        displayBlogPosts(samplePosts);
+    }
+}
+
+function displayBlogPosts(posts) {
+    const blogGrid = document.getElementById('blogGrid');
+    if (!blogGrid) return;
+
+    blogGrid.innerHTML = posts.map(post => `
+        <div class="blog-card">
+            <div class="blog-image">
+                <img src="${post.cover_image || 'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'}" 
+                     alt="${post.title}" 
+                     loading="lazy">
+            </div>
+            <div class="blog-content">
+                <span class="blog-tag">${post.tag_list[0] || 'Marketing'}</span>
+                <h3 class="blog-title">${post.title}</h3>
+                <p class="blog-excerpt">${post.description || 'Read our latest insights on digital marketing and technology.'}</p>
+                <div class="blog-meta">
+                    <div class="blog-author">
+                        <img src="${post.user.profile_image || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'}" 
+                             alt="${post.user.name}">
+                        <span class="blog-author-name">${post.user.name}</span>
+                    </div>
+                    <span class="blog-date">${new Date(post.published_at).toLocaleDateString()}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Initialize blog posts when the page loads
+document.addEventListener('DOMContentLoaded', fetchBlogPosts); 
