@@ -184,8 +184,19 @@ body {
 
 .mobile-menu {
     display: none;
-    font-size: 1.5rem;
     cursor: pointer;
+    z-index: 1001;
+    padding: 0.5rem;
+}
+
+.mobile-menu i {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+.mobile-menu.active i {
+    transform: rotate(90deg);
 }
 
 /* Hero Section */
@@ -1184,64 +1195,66 @@ body {
         top: 80px;
         left: 0;
         width: 100%;
-        background: white;
-        padding: 2rem;
-        box-shadow: var(--shadow-md);
+        height: 0;
+        background: var(--card-bg);
+        display: flex;
         flex-direction: column;
-        gap: 1rem;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1.5rem;
+        padding: 0;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-md);
+        border-bottom: 1px solid var(--border-color);
+        backdrop-filter: blur(10px);
     }
 
     .nav-links.active {
-        display: flex;
-    }
-
-    .nav-link {
-        padding: 0.75rem;
-        text-align: center;
-    }
-
-    .about-content,
-    .contact-content {
-        grid-template-columns: 1fr;
-    }
-
-    .services-grid,
-    .case-studies-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .about-image img {
-        max-width: 100%;
-    }
-    
-    .service-icon img {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .case-study-card img {
-        height: 200px;
-    }
-
-    .service-card {
+        height: calc(100vh - 80px);
+        opacity: 1;
+        visibility: visible;
         padding: 2rem;
     }
 
-    .service-card .service-icon i {
-        font-size: 2rem;
+    .nav-link {
+        font-size: 1.2rem;
+        width: 100%;
+        text-align: center;
+        padding: 1rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
     }
 
-    .service-card .service-icon::before {
-        width: 50px;
-        height: 50px;
+    .nav-link:hover {
+        background: var(--primary-color);
+        color: white;
     }
 
-    .see-more {
-        margin-top: 3rem;
+    .nav-link::after {
+        display: none;
     }
 
-    .logo-img {
-        height: 30px;
+    .cta-button {
+        display: none;
+    }
+
+    .nav-links .cta-button {
+        display: block;
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    .nav-links .cta-button .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Prevent body scroll when menu is open */
+    body.menu-open {
+        overflow: hidden;
     }
 }
 

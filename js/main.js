@@ -1,11 +1,49 @@
 // Mobile Menu Toggle
 const mobileMenu = document.querySelector('.mobile-menu');
 const navLinks = document.querySelector('.nav-links');
+const body = document.body;
 
+// Clone CTA button and add it to mobile menu
+const ctaButton = document.querySelector('.cta-button').cloneNode(true);
+navLinks.appendChild(ctaButton);
+
+// Toggle mobile menu
 mobileMenu.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
     mobileMenu.classList.toggle('active');
+    navLinks.classList.toggle('active');
+    body.classList.toggle('menu-open');
 });
+
+// Close menu when clicking a link
+navLinks.addEventListener('click', (e) => {
+    if (e.target.classList.contains('nav-link') || e.target.classList.contains('btn')) {
+        mobileMenu.classList.remove('active');
+        navLinks.classList.remove('active');
+        body.classList.remove('menu-open');
+    }
+});
+
+// Close menu when resizing window beyond mobile breakpoint
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        mobileMenu.classList.remove('active');
+        navLinks.classList.remove('active');
+        body.classList.remove('menu-open');
+    }
+});
+
+// Handle scroll lock when menu is open
+function handleScrollLock() {
+    if (body.classList.contains('menu-open')) {
+        body.style.overflow = 'hidden';
+    } else {
+        body.style.overflow = '';
+    }
+}
+
+// Watch for menu state changes
+const observer = new MutationObserver(handleScrollLock);
+observer.observe(body, { attributes: true, attributeFilter: ['class'] });
 
 // Smooth Scroll for Navigation Links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
