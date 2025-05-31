@@ -206,6 +206,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Initialize Lottie Animation
+const initHeroAnimation = () => {
+    lottie.loadAnimation({
+        container: document.getElementById('hero-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets10.lottiefiles.com/packages/lf20_M9p23l.json' // Modern AI/Digital transformation animation
+    });
+};
+
+// Initialize animations when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initHeroAnimation();
+});
+
 // Sample blog posts
 const samplePosts = [
     {
